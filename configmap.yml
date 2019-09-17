@@ -1,0 +1,15 @@
+kind: ConfigMap
+apiVersion: v1
+metadata:
+  # Must match the 'spring.application.name' property of the application
+  name: cameldemoenpointis
+data:
+  application.properties: 
+    # Override the configuration properties here
+    quickstart.recipients=postgres
+# oc create configmap cameldemoenpointis --from-literal=quickstart.recipients=postgres --from-literal=quickstart.recipientu=wana1200  --from-literal=quickstart.url=jdbc:postgresql://master:5432/postgres
+     
+#      <property name="driverClassName" value="org.postgresql.Driver"/>
+#        <property name="url" value="${quickstart.url}"/>
+#        <property name="username" value="${quickstart.recipientu}"/>
+#        <property name="password" value="wana1200"/
