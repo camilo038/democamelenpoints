@@ -33,27 +33,30 @@
             </handled>
             <log id="logBodyRequest" loggerRef="rh1"
                 loggingLevel="ERROR" message="Exception: ${exception.message}, StackTrace:      ${exception.stacktrace}"/>
+            <setHeader headerName="trazaerror">
+                <simple>${exception.stacktrace}</simple>
+            </setHeader>
             <to pattern="InOnly" uri="ref:sedaCorreoSoporteEndpoint"/>
         </onException>
         <route id="simple-route">
             <from id="_from1" uri="timer:timerName?period=10000s"/>
             <to id="_to1" uri="sql://{{inicalsql}}"/>
-            <setHeader headerName="Boca"><simple>Boca</simple></setHeader>
+            <setHeader headerName="Boca" id="_setHeader2">
+                <simple>Boca</simple>
+            </setHeader>
             <when id="_when1">
                 <simple>${body.isEmpty()}</simple>
-                <log loggerRef="rh1"  message="No hay info "></log>
+                <log id="_log4" loggerRef="rh1" message="No hay info "/>
             </when>
             <otherwise id="_otherwise1">
                 <split id="_split1" stopOnException="true" streaming="true">
                     <simple>body</simple>
-                    
                     <log id="_log1" loggerRef="rh1" loggingLevel="INFO" message="Captura consulta ${body}_======="/>
                 </split>
             </otherwise>
-<!--             <setHeader headerName="nombre" id="_setHeader5"> -->
-<!--                         <simple resultType="String">${body['nombre']}</simple> -->
-<!--                     </setHeader> -->
-            
+            <!--             <setHeader headerName="nombre" id="_setHeader5"> -->
+            <!--                         <simple resultType="String">${body['nombre']}</simple> -->
+            <!--                     </setHeader> -->
             <when id="_when2">
                 <simple>${header.nombre} == 'Mariano'</simple>
                 <log id="_log3" loggerRef="rh1" loggingLevel="INFO" message="Hola ${header.nombre} "/>
@@ -69,7 +72,7 @@
             <description>Se redirecciona el mensaje al JMS de envío de Emails</description>
             <from id="_from2" uri="ref:sedaCorreoSoporteEndpoint"/>
             <doTry id="_doTry1">
-                <log id="_log10" loggerRef="rh1" loggingLevel="INFO" message="Notificando el Error: ${property.errorMessage}"/>
+                <log id="_log10" loggerRef="rh1" loggingLevel="INFO" message="Notificando el Error: ${header.trazaerror}"/>
                 <setHeader headerName="DescripcionError" id="_setHeader1">
                     <simple> ${header.trazaerror}</simple>
                 </setHeader>

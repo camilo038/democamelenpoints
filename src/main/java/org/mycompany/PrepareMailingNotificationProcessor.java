@@ -23,7 +23,7 @@ public class PrepareMailingNotificationProcessor implements Processor {
 	// set optional fields
 	map.put("Mensajes", String.valueOf(exchange.getIn().getHeader("Mensajes")));
 	map.put("NombreServicio", String.valueOf(exchange.getIn().getHeader("NombreServicio")));
-	map.put("Descripcion", String.valueOf(exchange.getIn().getHeader("Descripcion")));
+	map.put("Descripcion", String.valueOf(exchange.getIn().getHeader("DescripcionError")));
 	
 	exchange.getIn().setBody(map, Map.class);
     }
